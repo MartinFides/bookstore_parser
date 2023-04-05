@@ -8,10 +8,10 @@ from app.model.service import ServiceIMPL
 
 def parse_books():
     service = ServiceIMPL.compose()
-    http_client = HttpGatewayIMPL()
+    http_gateway = HttpGatewayIMPL()
     soup = SoupGatewayIMPL()
 
-    controller = ControllerIMPL(service=service, http_gateway=http_client, soup=soup)
+    controller = ControllerIMPL(service=service, http_gateway=http_gateway, soup=soup)
 
     pprint(controller.get_data())
 
