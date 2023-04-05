@@ -16,12 +16,7 @@ class Controller:
         ...
 
 
-class ControllerIMPL:
-    def __init__(self, service: Service, http_gateway: HttpGateway, soup: SoupGateway):
-        self.service = service
-        self.http_gateway = http_gateway
-        self.soup = soup
-
+class ControllerIMPL(Controller):
     def get_data(self) -> dict[str, str]:
         for company in self.service.companies:
             for shop in company.shops:
