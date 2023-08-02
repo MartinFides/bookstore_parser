@@ -8,6 +8,7 @@ from pydantic import validator
 
 from app.model.model import Book
 from app.model.model import Shop
+from app.model.type_alias import DictAny
 
 logger = logging.getLogger(__name__)
 
@@ -48,8 +49,17 @@ class PantaRheiBook(Book):
 
 
 class PantaRheiShopSk(Shop):
-    attributes: dict[str, str] = Field({"itemprop": "mainEntity"}, exclude=True)
+    attributes: DictAny = Field({"itemprop": "mainEntity"}, exclude=True)
     url: HttpUrl = "https://www.pantarhei.sk/"
+    headers: DictAny = Field(
+        {
+            "Accept": "*/*",
+            "Accept-Encoding": "gzip, deflate",
+            "Host": "www.google.com",
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36",
+        },
+        exclude=True,
+    )
 
     def parse_response(self, response: ResultSet) -> None:
         for name in response:

@@ -8,6 +8,7 @@ from app.gateway.http_gateway import HttpGateway
 from app.gateway.http_gateway import HttpResponse
 from app.model.base import Model
 from app.model.enums import Country
+from app.model.type_alias import DictAny
 
 
 class Book(Model):
@@ -19,11 +20,12 @@ class Book(Model):
 class Shop(Model):
     country: Country
     url: HttpUrl
-    attributes: dict[str, str] = Field(exclude=True)
+    attributes: DictAny = Field(exclude=True)
+    headers: DictAny = Field(exclude=True)
     books: list[Book] = Field(default_factory=list)
 
     def get_response(self, http_client: HttpGateway) -> HttpResponse:
-        return http_client.get(self.url)
+        return http_client.get(self.url, self.headers)
 
     @abc.abstractmethod
     def parse_response(self, response: ResultSet) -> None:

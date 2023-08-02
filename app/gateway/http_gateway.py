@@ -17,13 +17,13 @@ class HttpResponse(Protocol):
 
 class HttpGateway(ABC):
     @abstractmethod
-    def get(self, url) -> HttpResponse:
+    def get(self, url, headers) -> HttpResponse:
         pass
 
 
 class HttpGatewayIMPL(HttpGateway):
-    def get(self, url) -> HttpResponse:
-        response = requests.get(url)
+    def get(self, url, headers) -> HttpResponse:
+        response = requests.get(url, headers=headers)
 
         if response.status_code == 403:
             raise ForbiddenError(f"Forbidden access to {url=}")
