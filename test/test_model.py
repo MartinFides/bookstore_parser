@@ -2,7 +2,7 @@ from copy import deepcopy
 
 import pytest
 
-from app.model.model import Book
+from app.model.panta_rhei_model import PantaRheiBook
 
 VALID_DATA = {"author": "Adam Grant", "topic": "Ešte si to premysli", "price": "17,06 €"}
 
@@ -30,9 +30,9 @@ class TestBook:
         data = deepcopy(VALID_DATA)
         data["topic"] = topic
 
-        actual = Book.parse_obj(data)
+        actual = PantaRheiBook.parse_obj(data)
 
-        assert isinstance(actual, Book)
+        assert isinstance(actual, PantaRheiBook)
 
     @pytest.mark.parametrize("invalid_topic", INVALID_TOPICS)
     def test_can_raise_error_with_invalid_topic(self, invalid_topic: str) -> None:
@@ -40,4 +40,4 @@ class TestBook:
         data["topic"] = invalid_topic
 
         with pytest.raises(ValueError):
-            Book.parse_obj(data)
+            PantaRheiBook.parse_obj(data)

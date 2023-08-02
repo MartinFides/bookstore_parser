@@ -4,7 +4,7 @@ from typing import Self
 from app.model.base import Model
 from app.model.enums import Country
 from app.model.model import Company
-from app.model.model import PantaRheiSk
+from app.model.panta_rhei_model import PantaRheiShopSk
 
 
 class Service(Model):
@@ -22,5 +22,7 @@ class ServiceIMPL(Service):
     @classmethod
     def compose(cls) -> Self:
         return cls(
-            companies=[Company(name="Panta Rhei", shops=[PantaRheiSk(country=Country.SLOVAKIA)])]
+            companies=[
+                Company(name="Panta Rhei", shops=[PantaRheiShopSk(country=Country.SLOVAKIA)])
+            ]
         )
