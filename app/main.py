@@ -1,25 +1,19 @@
-import json
+import logging
 import logging.config
-from pathlib import Path
 from pprint import pprint
 
 from app.controller.controller import ControllerIMPL
+from app.gateway.exceptions import GatewayError
 from app.gateway.http_gateway import HttpGatewayIMPL
 from app.gateway.soup_gateway import SoupGatewayIMPL
+from app.logging_config import LOGGING_CONFIG
 from app.model.service import ServiceIMPL
-from app.util import get_file_path
 
 logger = logging.getLogger(__name__)
-LOGGING_SETTINGS = "logging.json"
 
 
-def configure_logging(config: Path) -> None:
-    if config.exists():
-        with config.open() as f:
-            loaded_config = json.load(f)
-            logging.config.dictConfig(loaded_config)
-    else:
-        raise FileNotFoundError(f"Couldn't configure the logger using {config!r}")
+def configure_logging() -> None:
+    logging.config.dictConfig(LOGGING_CONFIG)
 
 
 def parse_books():
@@ -32,12 +26,16 @@ def parse_books():
         service=service, http_gateway=http_gateway, soup_gateway=soup_gateway
     )
 
-    result = controller.get_data()
+    try:
+        result = controller.get_data()
 
-    logger.info("Printing result")
-    pprint(result)
+        logger.info("Printing result")
+        pprint(result)
+
+    except GatewayError as e:
+        logger.error(f"Could not get response because of: {e}")
 
 
 if __name__ == "__main__":
-    configure_logging(get_file_path(LOGGING_SETTINGS))
+    configure_logging()
     parse_books()
