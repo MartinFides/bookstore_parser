@@ -1,0 +1,7 @@
+version: '3'
+services:
+  bookstore_parser:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python3 /home/python/app/main.py
