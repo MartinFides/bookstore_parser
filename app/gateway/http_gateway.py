@@ -1,5 +1,6 @@
 from abc import ABC
 from abc import abstractmethod
+from http import HTTPStatus
 from typing import Protocol
 
 import requests
@@ -25,9 +26,9 @@ class HttpGatewayIMPL(HttpGateway):
     def get(self, url, headers) -> HttpResponse:
         response = requests.get(url, headers=headers)
 
-        if response.status_code == 403:
+        if response.status_code == HTTPStatus.FORBIDDEN:
             raise ForbiddenError(f"Forbidden access to {url=}")
-        elif not response.status_code == 200:
+        elif not response.status_code == HTTPStatus.OK:
             raise ResponseError("Status code of response was not 200")
 
         return requests.get(url)
